@@ -1,10 +1,11 @@
 // src/components/Companies.tsx
+// Uses the same fonts as the other sections (Fraunces + Inter), with system fallbacks.
 import { useCallback, useEffect, useRef, useState } from "react";
 
 type Company = {
   name: string;
-  category: string;
-  description: string;
+  category?: string;
+  description?: string;
   logo?: string; // path in /public, e.g. "/companies/argabioline.png"
   website?: string;
 };
@@ -33,7 +34,6 @@ const companies: Company[] = [
     description: "Sauces, olives, capers and lemons",
     website: "https://www.moumnani.com/",
     logo: "mam.png",
-
   },
   {
     name: "Coopérative Agricole BIOBENZAF",
@@ -66,7 +66,7 @@ const companies: Company[] = [
   },
   {
     name: "TSTYLE",
-   category: "Textiles",
+    category: "Textiles",
   },
   {
     name: "UNIVMAR",
@@ -103,6 +103,19 @@ const companies: Company[] = [
 
 const SPEED_PX_PER_SEC = 40; // autoplay speed
 const MANUAL_HOLD_MS = 900; // autoplay waits this long after an arrow click
+
+const sans = { fontFamily: "'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif" };
+const serif = { fontFamily: "'Fraunces', Georgia, 'Times New Roman', serif" };
+
+// Monogram shown in the logo box when a company has no logo yet
+const initials = (name: string): string =>
+  name
+    .split(/\s+/)
+    .map((w) => w.replace(/[^\p{L}]/gu, ""))
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0].toUpperCase())
+    .join("");
 
 export default function Companies() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -196,32 +209,35 @@ export default function Companies() {
   };
 
   const roundBtn =
-    "flex h-14 w-14 items-center justify-center rounded-full border border-[#cfd5d2] bg-white text-[#076b3f] transition-colors hover:bg-[#f0f7f3] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0f2a5c]";
+    "flex h-12 w-12 items-center justify-center rounded-full border border-[#06294a]/15 bg-white text-[#076b3f] transition-colors hover:border-[#076b3f] hover:bg-[#f0f7f3] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0f2a5c]";
 
   return (
-    <section id="companies" className="bg-white font-sans">
-      <div className="mx-auto max-w-[1280px] px-5 py-14 sm:px-8 lg:py-20">
+    <section id="companies" style={sans} className="bg-white antialiased">
+      <div className="mx-auto max-w-[1280px] px-5 py-20 sm:px-8 lg:py-28">
         {/* Header */}
-        <div className="flex flex-wrap items-end justify-between gap-6">
+        <div className="flex flex-wrap items-end justify-between gap-8">
           <div>
-            <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#076b3f]">
-              <span className="h-0.5 w-8 bg-[#c1272d]" aria-hidden="true" />
+            <p className="flex items-center gap-4 text-[13px] font-medium tracking-[0.03em] text-[#076b3f]">
+              <span className="block h-px w-10 bg-[#c1272d]" aria-hidden="true" />
               Participating Moroccan Companies
             </p>
-            <h2 className="mt-3 text-[38px] font-semibold leading-[1.1] tracking-[-0.04em] text-[#c1272d] sm:text-[48px]">
+            <h2
+              style={{ ...serif, fontVariationSettings: "'opsz' 144" }}
+              className="mt-5 text-[40px] font-light leading-[1.05] tracking-[-0.025em] text-[#c1272d] sm:text-[54px]"
+            >
               Meet Moroccan Exporters
             </h2>
           </div>
 
           <div className="flex gap-3">
             <button type="button" aria-label="Previous companies" onClick={() => step(-1)} className={roundBtn}>
-              <svg width="9" height="15" viewBox="0 0 8 14" fill="none" aria-hidden="true">
-                <path d="M7 1L1 7l6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <svg width="8" height="14" viewBox="0 0 8 14" fill="none" aria-hidden="true">
+                <path d="M7 1L1 7l6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
             <button type="button" aria-label="Next companies" onClick={() => step(1)} className={roundBtn}>
-              <svg width="9" height="15" viewBox="0 0 8 14" fill="none" aria-hidden="true">
-                <path d="M1 1l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <svg width="8" height="14" viewBox="0 0 8 14" fill="none" aria-hidden="true">
+                <path d="M1 1l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
             <button
@@ -231,12 +247,12 @@ export default function Companies() {
               className={roundBtn}
             >
               {playing ? (
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true">
                   <rect x="2" y="1" width="3.5" height="12" rx="1" />
                   <rect x="8.5" y="1" width="3.5" height="12" rx="1" />
                 </svg>
               ) : (
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true">
                   <path d="M3 1.5v11a.8.8 0 0 0 1.2.7l9-5.5a.8.8 0 0 0 0-1.4l-9-5.5A.8.8 0 0 0 3 1.5Z" />
                 </svg>
               )}
@@ -257,7 +273,7 @@ export default function Companies() {
           onBlur={() => setInteracting(false)}
           onTouchStart={() => setInteracting(true)}
           onTouchEnd={() => setInteracting(false)}
-          className="mt-8 flex gap-6 overflow-x-auto px-1 pb-6 pt-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="mt-12 flex gap-6 overflow-x-auto px-1 pb-8 pt-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {items.map((c, i) => {
             const isCopy = i >= companies.length;
@@ -265,10 +281,10 @@ export default function Companies() {
               <article
                 key={`${c.name}-${i}`}
                 aria-hidden={isCopy || undefined}
-                className="flex min-h-[400px] w-full shrink-0 flex-col rounded-[28px] border border-[#e5e8e6] bg-white p-8 shadow-[0_14px_34px_-20px_rgba(15,42,92,0.2)] md:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]"
+                className="flex min-h-[380px] w-full shrink-0 flex-col rounded-[28px] border border-[#e5e8e6] bg-gradient-to-b from-white to-[#f7f8f7] p-3 shadow-[0_40px_80px_-55px_rgba(15,42,92,0.4)] md:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]"
               >
                 {/* Logo box */}
-                <div className="flex h-[130px] items-center justify-center rounded-2xl border border-[#e5e8e6] bg-[#f7f8f7] px-6">
+                <div className="flex h-[140px] items-center justify-center rounded-[20px] border border-[#e5e8e6] bg-white px-6">
                   {c.logo ? (
                     <img
                       src={c.logo}
@@ -277,30 +293,54 @@ export default function Companies() {
                       className="max-h-[96px] w-auto max-w-full object-contain"
                     />
                   ) : (
-                    <span className="text-center text-[13px] font-semibold uppercase leading-6 tracking-[0.12em] text-[#4a5a6a]">
-                      {c.name}
+                    <span
+                      style={serif}
+                      className="grid h-16 w-16 place-items-center rounded-full bg-[#e6f3ec] text-[24px] font-light tracking-[-0.02em] text-[#076b3f]"
+                      aria-hidden="true"
+                    >
+                      {initials(c.name)}
                     </span>
                   )}
                 </div>
 
-                <p className="mt-6 text-[13px] font-bold uppercase tracking-[0.12em] text-[#076b3f]">{c.category}</p>
-                <h3 className="mt-3 text-2xl font-semibold leading-[1.2] tracking-[-0.03em] text-[#0f2a3c]">{c.name}</h3>
-                <p className="mt-4 text-[16px] leading-6 text-[#4a5a6a]">{c.description}</p>
-
-                {c.website && (
-                  <a
-                    href={c.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    tabIndex={isCopy ? -1 : undefined}
-                    className="mt-auto inline-flex items-center gap-1.5 pt-5 text-[16px] font-semibold text-[#076b3f] hover:underline focus-visible:underline focus-visible:outline-none"
+                <div className="flex flex-1 flex-col px-5 pb-5 pt-6">
+                  {c.category && (
+                    <p className="text-[13px] font-medium tracking-[0.02em] text-[#076b3f]">{c.category}</p>
+                  )}
+                  <h3
+                    style={serif}
+                    className="mt-2 text-[24px] font-normal leading-[1.15] tracking-[-0.015em] text-[#0f2a3c]"
                   >
-                    Visit Company Website
-                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                      <path d="M2 10L10 2M4 2h6v6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </a>
-                )}
+                    {c.name}
+                  </h3>
+                  {c.description && (
+                    <p className="mt-3 text-[15px] leading-[1.7] text-[#4a5a6a]">{c.description}</p>
+                  )}
+
+                  {c.website && (
+                    <a
+                      href={c.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      tabIndex={isCopy ? -1 : undefined}
+                      className="group mt-auto inline-flex items-center gap-2 self-start pt-6 text-[15px] font-semibold text-[#076b3f] focus-visible:outline-none"
+                    >
+                      <span className="border-b border-[#076b3f]/30 pb-0.5 transition-colors group-hover:border-[#076b3f] group-focus-visible:border-[#076b3f]">
+                        Visit Company Website
+                      </span>
+                      <svg
+                        width="11"
+                        height="11"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                        aria-hidden="true"
+                      >
+                        <path d="M2 10L10 2M4 2h6v6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </a>
+                  )}
+                </div>
               </article>
             );
           })}
