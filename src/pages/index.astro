@@ -1,4 +1,15 @@
 ---
+import Header from "../components/Header";
+import Hero from "../components/Hero";
+import AboutAmdie from "../components/AboutAmdie";
+import AboutMission from "../components/AboutMission";
+import Sectors from "../components/Sectors";
+import WhyMorocco from "../components/WhyMorocco";
+import CtaBanner from "../components/CtaBanner";
+import Footer from "../components/Footer";
+import Registration from "../components/Registration";
+import Companies from "../components/Companies";
+import "../styles/global.css"
 ---
 
 <html lang="en">
@@ -11,6 +22,15 @@
 		<title>Astro</title>
 	</head>
 	<body>
-		<h1>Astro</h1>
+	    <Header client:load />
+        <Hero />
+        <AboutAmdie />
+        <AboutMission />
+        <Sectors client:load />
+        <WhyMorocco />
+        <Companies client:load />
+        <Registration client:load />
+        <CtaBanner />
+        <Footer />
 	</body>
 </html>
