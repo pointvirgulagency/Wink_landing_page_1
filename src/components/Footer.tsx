@@ -1,87 +1,98 @@
-type NavLink = {
-  label: string;
-  href: string;
+const sans = {
+  fontFamily: "'DM Sans', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif",
 };
 
-const navLinks: NavLink[] = [
-  { label: "About the Mission", href: "#about" },
-  { label: "Sectors", href: "#sectors" },
-  { label: "Moroccan Companies", href: "#companies" },
-  { label: "Register", href: "#registration" },
-];
-
-const missionInfo: string[] = [
-  "Morocco–Germany B2B Business Mission 2026",
-  "Frankfurt — 23 November 2026",
-  "Düsseldorf — 26 November 2026",
-];
-
 const EMAIL = "hala@wink-consulting.com";
-const PHONE = "+212 669-270075";
+const PHONE = "+212 669 270 075";
+const WINK_URL = "https://wink-consulting.com";
 
-const POINTVIRGUL_URL = "https://www.pointvirgul.com";
+const explore = [
+  { label: "About the mission", href: "#about" },
+  { label: "Export sectors", href: "#sectors" },
+  { label: "Participating companies", href: "#companies" },
+  { label: "Buyer registration", href: "#registration" },
+];
 
-const sans = { fontFamily: "'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif" };
-const serif = { fontFamily: "'Fraunces', Georgia, 'Times New Roman', serif" };
+const cities = [
+  { city: "Frankfurt", date: "23 November 2026" },
+  { city: "Düsseldorf", date: "26 November 2026" },
+];
 
-// Every column opens with a row of the same height, so the content below starts on the same line.
-const topRow = "flex h-10 items-center";
-const headingClass = "text-[20px] font-normal leading-none tracking-[-0.01em] text-[#0f2a3c]";
-const listClass = "mt-5 space-y-2 text-[14px] leading-6 text-[#3d4a56]";
+const organisations = [
+  {
+    abbr: "AMDIE",
+    name: "Moroccan Investment and Export Development Agency.",
+    text: "Promoting investment and the international growth of Moroccan businesses.",
+  },
+  {
+    abbr: "ASMEX",
+    name: "Moroccan Confederation of Exporters.",
+    text: "Representing and supporting Morocco\u2019s export community.",
+  },
+];
+
+const headingClass = "text-[20px] font-semibold tracking-[-0.01em] text-[#14302a]";
+const textClass = "text-[16px] leading-[1.7] text-[#55665e]";
 const linkClass =
-  "group relative inline-block transition-colors hover:text-[#006b3f] focus-visible:text-[#006b3f] focus-visible:outline-none";
+  "group relative inline-flex items-center gap-1 transition-colors hover:text-[#0b6a4a] focus-visible:text-[#0b6a4a] focus-visible:outline-none";
 const underline =
-  "pointer-events-none absolute -bottom-px left-0 h-px w-full origin-left scale-x-0 bg-[#006b3f] transition-transform duration-300 ease-out group-hover:scale-x-100 group-focus-visible:scale-x-100";
+  "pointer-events-none absolute -bottom-px left-0 h-px w-full origin-left scale-x-0 bg-[#0b6a4a] transition-transform duration-300 ease-out group-hover:scale-x-100 group-focus-visible:scale-x-100";
+
+const ArrowUpRight = () => (
+  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="stroke-current" aria-hidden="true">
+    <path
+      d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
 export default function Footer() {
   return (
-    <footer style={sans} className="border-t-2 border-[#006b3f] bg-white antialiased">
-      <div className="mx-auto max-w-[1280px] px-5 pt-12 sm:px-8">
-        <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-[1.1fr_1.4fr_0.8fr_1.1fr] xl:gap-14">
-          {/* Brand */}
-          <div className="flex flex-col">
-            <div className={`${topRow} gap-6`}>
-              <img src="/header-logo1.png" alt="AMDIE" className="block h-9 w-auto" />
-              <span className="h-7 w-px bg-[#0f2a5c]/15" aria-hidden="true" />
-              <img src="/header-logo2.png" alt="ASMEX" className="block h-10 w-auto" />
-            </div>
-
-            <p className="mt-5 max-w-[360px] text-[14px] leading-6 text-[#3d4a56]">
-              AMDIE — Moroccan Investment and Export Development Agency
-            </p>
-            <p
-              style={serif}
-              className="mt-3 max-w-[360px] text-[18px] font-normal italic leading-6 tracking-[-0.01em] text-[#006b3f] xl:mt-auto xl:pt-3"
-            >
-              Connecting Moroccan businesses with international markets.
-            </p>
+    <footer style={sans} className="bg-[#f9f9f6] text-[#14302a] antialiased">
+      <div className="mx-auto max-w-[1350px] px-5 pt-14 sm:px-8">
+        {/* ------------------------- Top row: logos + organisations ------------------------- */}
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[0.8fr_1fr_1fr] lg:gap-12">
+          <div className="flex items-start gap-8 md:col-span-2 lg:col-span-1">
+            <img src="/header-logo1.png" alt="AMDIE" className="block h-12 w-auto" />
+            <span className="mt-1 h-12 w-px bg-[#14302a]/10" aria-hidden="true" />
+            <img src="/header-logo2.png" alt="ASMEX" className="block h-12 w-auto" />
           </div>
 
-          {/* Mission info */}
+          {organisations.map((o) => (
+            <p key={o.abbr} className={`${textClass} max-w-[400px]`}>
+              <strong className="font-semibold text-[#14302a]">{o.abbr}</strong>
+              {" \u2014 "}
+              {o.name}
+              <br />
+              {o.text}
+            </p>
+          ))}
+        </div>
+
+        {/* ------------------------- Link columns ------------------------- */}
+        <div className="mt-16 grid gap-12 md:grid-cols-2 lg:grid-cols-[1.25fr_1fr_1fr] lg:gap-12">
+          {/* The two city meetings */}
           <div>
-            <div className={topRow}>
-              <h3 style={serif} className={headingClass}>
-                Mission Information
-              </h3>
-            </div>
-            <ul className={listClass}>
-              {missionInfo.map((line) => (
-                <li key={line} className="xl:whitespace-nowrap">
-                  {line}
-                </li>
+            <h3 className={headingClass}>The two city meetings</h3>
+            <p className={`mt-6 ${textClass}`}>Morocco–Germany B2B Business Mission 2026</p>
+            <div className="mt-6 space-y-5">
+              {cities.map((c) => (
+                <div key={c.city}>
+                  <p className="text-[16px] font-semibold text-[#14302a]">{c.city}</p>
+                  <p className={textClass}>{c.date}</p>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
 
-          {/* Navigation */}
+          {/* Explore the mission */}
           <nav aria-label="Footer">
-            <div className={topRow}>
-              <h3 style={serif} className={headingClass}>
-                Navigation
-              </h3>
-            </div>
-            <ul className={listClass}>
-              {navLinks.map((l) => (
+            <h3 className={headingClass}>Explore the mission</h3>
+            <ul className={`mt-6 space-y-5 ${textClass}`}>
+              {explore.map((l) => (
                 <li key={l.href}>
                   <a href={l.href} className={linkClass}>
                     {l.label}
@@ -92,44 +103,48 @@ export default function Footer() {
             </ul>
           </nav>
 
-          {/* Contact */}
+          {/* Let's connect */}
           <div>
-            <div className={topRow}>
-              <h3 style={serif} className={headingClass}>
-                Contact
-              </h3>
-            </div>
-            <ul className={listClass}>
+            <h3 className={headingClass}>Let&rsquo;s connect</h3>
+            <ul className={`mt-6 space-y-5 ${textClass}`}>
               <li>
-                <span className="text-[#3d4a56]/70">Email:</span>{" "}
                 <a href={`mailto:${EMAIL}`} className={linkClass}>
                   {EMAIL}
+                  <ArrowUpRight />
                   <span className={underline} aria-hidden="true" />
                 </a>
               </li>
               <li>
-                <span className="text-[#3d4a56]/70">Phone:</span>{" "}
                 <a href={`tel:${PHONE.replace(/[^+\d]/g, "")}`} className={linkClass}>
                   {PHONE}
                   <span className={underline} aria-hidden="true" />
                 </a>
               </li>
+              <li className="pt-1 leading-[2.25]">
+                {cities.map((c) => (
+                  <span key={c.city} className="block">
+                    {c.city} · {c.date}
+                  </span>
+                ))}
+              </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-10 border-t border-[#e5e8e6] py-5 text-[13px] text-[#3d4a56]/80">
-          Website by{" "}
-          <a
-            href={POINTVIRGUL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative inline-block font-semibold text-[#0f2a3c] transition-colors hover:text-[#006b3f] focus-visible:text-[#006b3f] focus-visible:outline-none"
-          >
-            PointVirgul
-            <span className={underline} aria-hidden="true" />
-          </a>
+        <div className="mt-14 flex flex-col gap-2 border-t border-[#14302a]/10 py-6 text-[15px] text-[#55665e] sm:flex-row sm:items-center sm:justify-between">
+          <p>© 2026 · Morocco–Germany B2B Business Mission</p>
+          <p>
+            Mission coordination ·{" "}
+            <a
+              href={WINK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative inline-block font-bold tracking-[0.18em] text-[#0b6a4a] focus-visible:outline-none"
+            >
+              WINK
+              <span className={underline} aria-hidden="true" />
+            </a>
+          </p>
         </div>
       </div>
     </footer>

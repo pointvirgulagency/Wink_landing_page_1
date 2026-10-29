@@ -1,86 +1,104 @@
 // src/components/AboutAmdie.tsx
-// Logo goes in /public as /header-logo1.png (same one used in the header)
-// Uses the same fonts as Hero.tsx and Header.tsx (Fraunces + Inter), with system fallbacks.
+// Logos: /header-logo1.png (AMDIE) and /header-logo2.png (ASMEX), same files as the header.
+import React from "react";
 
-const paragraphs: string[] = [
-  "The Moroccan Investment and Export Development Agency (AMDIE) is the national institution dedicated to promoting investment and supporting the international development of Moroccan businesses.",
-  "AMDIE plays a key role in strengthening Morocco's position in global markets by facilitating business connections, promoting Moroccan expertise, and creating opportunities for international trade and strategic partnerships.",
-  "Through initiatives such as the Morocco–Germany B2B Business Mission 2026, AMDIE connects Moroccan exporters with international buyers, fostering sustainable commercial relationships and new business opportunities.",
+type Host = {
+  label: string;
+  name: string;
+  subtitle: string;
+  description: string;
+  logo: string;
+  href: string;
+};
+
+const hosts: Host[] = [
+  {
+    label: "Mission Organizer",
+    name: "AMDIE",
+    subtitle: "Moroccan Investment and Export Development Agency",
+    description:
+      "AMDIE is Morocco’s national agency for promoting investment and exports. It supports the international development of Moroccan businesses and connects their products and services with overseas markets.",
+    logo: "/header-logo1.png",
+    href: "https://www.amdie.gov.ma",
+  },
+  {
+    label: "Featured Partner",
+    name: "ASMEX",
+    subtitle: "Moroccan Confederation of Exporters",
+    description:
+      "ASMEX brings together, represents and supports Moroccan exporters. Its mission is to defend their interests, promote Moroccan exports and help businesses develop their presence in international markets.",
+    logo: "/header-logo2.png",
+    href: "https://www.asmex.ma",
+  },
 ];
 
-const sans = { fontFamily: "'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif" };
-const serif = { fontFamily: "'Fraunces', Georgia, 'Times New Roman', serif" };
+const ArrowUpRight = ({ className = "" }: { className?: string }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    aria-hidden="true"
+  >
+    <path d="M7 17L17 7M8 7h9v9" />
+  </svg>
+);
 
 export default function AboutAmdie() {
-  const [lead, ...rest] = paragraphs;
-
   return (
-    <section id="about" style={sans} className="bg-white antialiased">
-      <div className="mx-auto grid max-w-[1280px] items-center gap-12 px-5 py-20 sm:px-8 md:grid-cols-[440px_1fr] md:gap-20 lg:py-28">
-        {/* Logo card */}
-        <figure className="relative m-0 flex min-h-[340px] flex-col justify-between overflow-hidden rounded-[32px] border border-[#e5e8e6] bg-gradient-to-b from-white to-[#f7f8f7] p-8 shadow-[0_40px_80px_-50px_rgba(15,42,92,0.35)] sm:p-10">
-          {/* Soft corner glow, same navy as the hero */}
-          <div
-            className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-[#06294a]/[0.05] blur-3xl"
-            aria-hidden="true"
-          />
-
-          <div className="relative flex flex-1 items-center justify-center">
-            <img
-              src="/header-logo1.png"
-              alt="AMDIE – Agence Marocaine de Développement des Investissements et des Exportations"
-              className="block h-auto w-[270px] max-w-full"
-            />
-          </div>
-
-          <figcaption className="relative mt-8 border-t border-[#14212b]/10 pt-5 text-center text-[13px] font-medium leading-snug text-[#14212b]">
-            Moroccan Investment and Export Development Agency
-          </figcaption>
-        </figure>
-
-        {/* Text */}
-        <div>
-          <p className="flex items-center gap-4 text-[13px] font-medium tracking-[0.03em] text-[#076b3f]">
-            <span className="block h-px w-10 bg-[#c1272d]" aria-hidden="true" />
-            Event Organizer
+    <section id="about" className="bg-white font-sans antialiased">
+      <div className="grid grid-cols-1 px-5 py-14 sm:px-10 lg:grid-cols-[484fr_583fr_530fr] lg:px-[7.8vw] lg:py-[64px]">
+        {/* Intro */}
+        <div className="pb-10 lg:pb-0 lg:pr-[90px]">
+          <p className="flex items-center gap-[20px] text-[11.5px] font-bold uppercase tracking-[0.2em] text-[#0a6a4a]">
+            <span className="block h-[2px] w-[28px] bg-[#b3263b]" aria-hidden="true" />
+            Meet your hosts
           </p>
 
-          <h2
-            style={{ ...serif, fontVariationSettings: "'opsz' 144" }}
-            className="mt-5 text-[40px] font-light leading-[1.05] tracking-[-0.025em] text-[#c1272d] sm:text-[54px]"
-          >
-            About AMDIE
+          <h2 className="mt-[34px] text-[clamp(1.9rem,2.5vw,2.5rem)] font-medium leading-[1.12] tracking-[-0.045em]">
+            <span className="block text-[#0b4638]">The institutions</span>
+            <span className="block text-[#087a55]">behind the mission.</span>
           </h2>
 
-          <div className="mt-8 max-w-[640px]">
-            <p className="text-[19px] leading-[1.65] text-[#14212b]">{lead}</p>
-
-            <div className="mt-6 space-y-4 border-l border-[#c1272d]/25 pl-6 text-[16px] leading-[1.75] text-[#4a5a6a]">
-              {rest.map((p) => (
-                <p key={p}>{p}</p>
-              ))}
-            </div>
-          </div>
-
-          <a
-            href="https://www.amdie.gov.ma"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group mt-10 inline-flex items-center gap-3 rounded-full bg-[#006b3f] px-8 py-4 text-[15px] font-semibold text-white shadow-[0_10px_30px_-10px_rgba(7,107,63,0.9)] transition-colors hover:bg-[#055732] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0f2a5c]"
-          >
-            Discover AMDIE
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 12 12"
-              fill="none"
-              className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              aria-hidden="true"
-            >
-              <path d="M2 10L10 2M4 2h6v6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </a>
+          <p className="mt-[30px] max-w-[390px] text-[16px] leading-[28px] text-[#5b6670]">
+            Get to know the Moroccan institutions connecting exporters with international business
+            opportunities.
+          </p>
         </div>
+
+        {/* Host columns */}
+        {hosts.map((h) => (
+          <article
+            key={h.name}
+            className="flex flex-col border-t border-[#e3e6e8] py-10 lg:border-l lg:border-t-0 lg:py-0 lg:pl-[30px] lg:pr-[40px]"
+          >
+            <img src={h.logo} alt={h.name} className="block h-auto w-[86px] self-start" />
+
+            <p className="mt-[34px] text-[12px] font-bold uppercase tracking-[0.2em] text-[#0a6a4a]">
+              {h.label}
+            </p>
+            <h3 className="mt-[12px] text-[21px] font-semibold leading-tight tracking-[-0.01em] text-[#10261f]">
+              {h.name}
+            </h3>
+            <p className="mt-[16px] max-w-[330px] text-[17px] font-medium leading-[27px] text-[#10261f]">
+              {h.subtitle}
+            </p>
+            <p className="mt-[16px] text-[15.5px] leading-[28px] text-[#5b6670]">{h.description}</p>
+
+            <a
+              href={h.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-auto inline-flex w-fit items-center gap-[6px] pt-[28px] text-[15px] font-semibold text-[#10261f] hover:underline hover:underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0a6a4a]"
+            >
+              Discover {h.name}
+              <ArrowUpRight className="h-[13px] w-[13px]" />
+            </a>
+          </article>
+        ))}
       </div>
     </section>
   );

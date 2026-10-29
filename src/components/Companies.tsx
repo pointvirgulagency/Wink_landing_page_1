@@ -1,113 +1,167 @@
-// src/components/Companies.tsx
-// Uses the same fonts as the other sections (Fraunces + Inter), with system fallbacks.
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useMemo, useState } from "react";
+
+type SectorId = "agri" | "textiles" | "automotive" | "cosmetics" | "stone";
 
 type Company = {
   name: string;
-  category?: string;
+  sector?: SectorId;
   description?: string;
-  logo?: string; // path in /public, e.g. "/companies/argabioline.png"
+  logo?: string; // e.g. "/img.png"
+  photo?: string;
   website?: string;
 };
 
+const SECTORS: Record<SectorId, { label: string; filter: string }> = {
+  agri: { label: "Agri-food & seafood", filter: "Agri-food & seafood" },
+  textiles: { label: "Textiles & apparel", filter: "Textiles" },
+  automotive: { label: "Automotive & plastics", filter: "Automotive" },
+  cosmetics: { label: "Cosmetics & beauty", filter: "Cosmetics" },
+  stone: { label: "Marble & natural stone", filter: "Natural stone" },
+};
+
+const FILTER_ORDER: SectorId[] = ["agri", "textiles", "automotive", "cosmetics", "stone"];
+
+const UPDATED = "21 October 2026";
+const INITIAL_VISIBLE = 6;
+const MEET_HREF = "#contact"; // where "Meet this company" should lead (companies without a website)
+
 const companies: Company[] = [
   {
-    name: "ARGABIOLINE",
-    category: "Cosmetics & Argan Oil",
-    description: "Cosmetic argan oil, edible argan oil, soap and beauty products.",
-    logo: "img.png",
-    website: "https://www.argabioline.com/",
-  },
-  {
-    name: "CONEX SERVICE TEXTILES MAROC",
-    category: "Textiles & Accessories",
-    description: "Textile accessories for apparel.",
-  },
-  {
-    name: "Coopérative féminine des plantes aromatiques",
-    category: "Agri-Food",
-    description: "Durum wheat, barley, almond amlou, peanut amlou, mint.",
-  },
-  {
     name: "Andalous Food Group",
-    category: "Agri-Food",
-    description: "Sauces, olives, capers and lemons",
+    sector: "agri",
+    description: "Sauces, olives, capers and preserved lemons.",
     website: "https://www.moumnani.com/",
-    logo: "mam.png",
+    logo: "/mam.png",
+    photo: "/companies/company-1.jpg",
+  },
+  {
+    name: "ARGABIOLINE",
+    sector: "cosmetics",
+    description: "Cosmetic and edible argan oil, soaps and beauty products.",
+    website: "https://www.argabioline.com/",
+    logo: "/img.png",
+    photo: "/companies/company-2.jpg",
+  },
+  {
+    name: "CONEX SERVICE TEXTILES MAROC – QST MAROC",
+    sector: "textiles",
+    description: "Textile accessories for apparel.",
+    photo: "/companies/company-3.jpg",
+  },
+  {
+    name: "Coopérative féminine de distillation des plantes aromatiques",
+    sector: "agri",
+    description: "Agri-food sector.",
+    photo: "/companies/company-4.jpg",
   },
   {
     name: "Coopérative Agricole BIOBENZAF",
-    category: "Agri-Food & Carob Products",
-    description: "Carob flour, chocolate substitutes, carob tea, carob seed coffee, chocolate drinks, jams, spreads, carob syrup and molasses.",
-    logo: "img_1.png",
+    sector: "agri",
+    description: "Carob-based food products and ingredients.",
     website: "https://www.biobenzaf.com/",
+    logo: "/img_1.png",
+    photo: "/companies/company-5.jpg",
   },
   {
     name: "MIL'YOU PARFUM SARL",
-    category: "Cosmetics & Argan Oil",
-    description: "Roasted and unroasted argan oil",
+    sector: "cosmetics",
+    description: "Cosmetics and argan products.",
+    photo: "/companies/company-6.jpg",
   },
   {
-    name: "SOUS POISSON",
-    category: "Agri-Food & Seafood",
+     name: "EPICES TAIBA SARL",
+     sector: "agri",
+     description: "Premium Moroccan olive oils, spices and seeds.",
+     photo: "/companies/company-7.jpg",
   },
   {
-    name: "SOVEROC",
-    category: "Automotive & Plastics Manufacturings",
+     name: "LAVASSER",
+     sector: "textiles",
+     description: "Trousers, jackets, shorts, overalls, jumpsuits and shirts.",
+     website: "https://www.lavasser.com",
+     photo: "/companies/company-8.jpg",
   },
   {
-    name: "COOPERATIVE AL JOUNIDIA",
-    category: "Agri-Food",
-  },
-  {
-    name: "HOME SECRET",
-    category: "Cosmetics",
-    logo: "img_2.png",
-  },
-  {
-    name: "TSTYLE",
-    category: "Textiles",
-  },
-  {
-    name: "UNIVMAR",
-    category: "Marble & Natural Stone",
-    description: "Moroccan marble and natural stone: blocks, slabs, tiles, coping stones and custom-made pieces.",
-    website: "https://www.viazastone.com/",
-  },
-  {
-    name: "GREEN CASABLANCA",
+    name: "SCISCCO CLOTHING",
+    sector: "textiles",
+    photo: "/companies/company-9.jpg",
+    description: "Textiles and garment manufacturing.",
   },
   {
     name: "KING PELAGIQUE GROUP",
-    category: "Seafood",
-    website: "https://www.kingpelagique.ma/",
+    sector: "agri",
+    description: "Seafood products.",
+    website: "www.kingpelagique.ma",
+    photo: "/companies/company-10.jpg",
   },
   {
-    name: "LAVASSER",
-    category: "Textiles & Apparel",
-    description: "Trousers, jackets, shorts, overalls, jumpsuits and shirts",
-    website: "https://www.lavasser.com",
+    name: "GREEN CASABLANCA",
+    sector: "agri",
+    website: "www.casablanca-green.com",
+    description : "Agri-food sector",
+    photo: "/companies/company-11.jpg",
+  },
+
+  {
+    name: "UNIVMAR",
+    sector: "stone",
+    description: "Marble and natural stone.",
+    website: "https://www.viazastone.com/",
+    photo: "/companies/company-12.jpg",
+  },
+
+  {
+    name: "SOVEROC",
+    sector: "automotive",
+    description: "Automotive and plastics manufacturing.",
+    website: "www.soverep.fr",
+    photo: "/companies/company-13.jpg"
   },
   {
-    name: "DALIA FOOD",
-    category: "Agri-Food, Pasta & Couscous",
-    description: "Pasta, couscous, semolina and noodles",
-    website: "https://dalia.ma/",
+    name: "HOME SECRET",
+    sector: "cosmetics",
+    logo: "/img_2.png",
+    photo: "/companies/company-14.jpg"},
+  {
+    name: "TSTYLE",
+    sector: "textiles",
+    photo: "/companies/company-15.jpg"
   },
   {
-    name: "EPICES TAIBA SARL",
-    category: "Agri-Food, Spices & Oils",
-    description: "Premium Moroccan olive oils, spices and seeds",
+    name: "SOUSS POISSON",
+    sector: "agri",
+    description: "Agri-food and seafood products.",
+    photo: "/companies/company-16.jpg",
   },
+  {
+    name: "GAUDIUM",
+    sector: "agri",
+    description: "Agri-food sector.",
+    website: "www.bene.ma",
+    photo: "/companies/company-18.jpg",
+  },
+  {
+    name: "COOPERATIVE AL JOUNIDIA",
+    sector: "agri",
+    description: "Agri-food sector.",
+    photo: "/companies/company-17.jpg",
+  },
+  {
+    name: "MARY JAD",
+    sector: "agri",
+    description: "Agri-food sector.",
+    photo: "/companies/company-19.jpg",
+  },
+
 ];
 
-const SPEED_PX_PER_SEC = 40; // autoplay speed
-const MANUAL_HOLD_MS = 900; // autoplay waits this long after an arrow click
+const sans = {
+  fontFamily: "'DM Sans', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif",
+};
 
-const sans = { fontFamily: "'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif" };
-const serif = { fontFamily: "'Fraunces', Georgia, 'Times New Roman', serif" };
+const pad = (n: number): string => String(n).padStart(2, "0");
 
-// Monogram shown in the logo box when a company has no logo yet
+// Monogram shown when a company has no logo yet
 const initials = (name: string): string =>
   name
     .split(/\s+/)
@@ -117,234 +171,217 @@ const initials = (name: string): string =>
     .map((w) => w[0].toUpperCase())
     .join("");
 
-export default function Companies() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const idleTimer = useRef<number | undefined>(undefined);
-  const holdTimer = useRef<number | undefined>(undefined);
+// Each company gets its own photo and logo. Drop the files in /public/companies/ named after the
+// company slug (e.g. "andalous-food-group.jpg" and "andalous-food-group-logo.png"), or set
+// `photo` / `logo` on the company to use any other path.
+const slugify = (name: string): string =>
+  name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 
-  const [playing, setPlaying] = useState<boolean>(true);
-  const [interacting, setInteracting] = useState<boolean>(false); // hover / focus / touch
-  const [hold, setHold] = useState<boolean>(false); // brief pause after arrow clicks
+const photoPath = (c: Company): string => c.photo ?? `/companies/${slugify(c.name)}.jpg`;
+const logoPath = (c: Company): string => c.logo ?? `/companies/${slugify(c.name)}-logo.png`;
 
-  // The list is rendered twice so the loop is seamless
-  const items = [...companies, ...companies];
-
-  // Width of one full set of cards (including gaps)
-  const loopWidth = useCallback((): number => {
-    const el = trackRef.current;
-    const first = el?.children[0] as HTMLElement | undefined;
-    const second = el?.children[companies.length] as HTMLElement | undefined;
-    return first && second ? second.offsetLeft - first.offsetLeft : 0;
-  }, []);
-
-  // Start paused for people who prefer reduced motion
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setPlaying(false);
-  }, []);
-
-  // Continuous autoplay. Cleanup cancels the animation frame, so pausing stops instantly.
-  useEffect(() => {
-    if (!playing || interacting || hold) return;
-    const el = trackRef.current;
-    if (!el) return;
-
-    let raf = 0;
-    let last = performance.now();
-    let pos = el.scrollLeft;
-
-    const tick = (now: number) => {
-      const dt = Math.min(now - last, 64) / 1000;
-      last = now;
-
-      // If something else moved the track (wheel, drag, arrows), continue from there
-      if (Math.abs(el.scrollLeft - pos) > 1.5) pos = el.scrollLeft;
-
-      pos += SPEED_PX_PER_SEC * dt;
-      const loop = loopWidth();
-      if (loop > 0 && pos >= loop) pos -= loop;
-      el.scrollLeft = pos;
-
-      raf = requestAnimationFrame(tick);
-    };
-
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [playing, interacting, hold, loopWidth]);
-
-  // When scrolling stops, jump back by one loop if we went past it (invisible: the cards repeat)
-  const handleScroll = () => {
-    window.clearTimeout(idleTimer.current);
-    idleTimer.current = window.setTimeout(() => {
-      const el = trackRef.current;
-      const loop = loopWidth();
-      if (el && loop > 0 && el.scrollLeft >= loop) el.scrollLeft -= loop;
-    }, 150);
-  };
-
-  useEffect(
-    () => () => {
-      window.clearTimeout(idleTimer.current);
-      window.clearTimeout(holdTimer.current);
-    },
-    []
+// Company photo; if the file is missing the green placeholder behind it shows instead
+function CompanyPhoto({ src }: { src: string }) {
+  const [failed, setFailed] = useState<boolean>(false);
+  if (failed) return null;
+  return (
+    <img
+      src={src}
+      alt=""
+      loading="lazy"
+      onError={() => setFailed(true)}
+      className="h-full w-full object-cover"
+    />
   );
+}
 
-  const step = (direction: 1 | -1) => {
-    const el = trackRef.current;
-    const card = el?.children[0] as HTMLElement | undefined;
-    if (!el || !card) return;
+// Company logo; if the file is missing it shows a monogram instead
+function CompanyLogo({ src, name }: { src: string; name: string }) {
+  const [failed, setFailed] = useState<boolean>(false);
+  if (failed) {
+    return (
+      <span
+        className="absolute left-0 top-0 grid h-9 w-9 place-items-center rounded-full border border-[#e5e8e6] bg-white text-[11px] font-medium text-[#0f2a3c]"
+        aria-hidden="true"
+      >
+        {initials(name)}
+      </span>
+    );
+  }
+  return (
+    <div className="absolute left-0 top-0 flex h-10 items-center rounded-md border border-[#e5e8e6] bg-white px-2.5">
+      <img
+        src={src}
+        alt={`${name} logo`}
+        loading="lazy"
+        onError={() => setFailed(true)}
+        className="max-h-7 w-auto max-w-[110px] object-contain"
+      />
+    </div>
+  );
+}
 
-    // Let the smooth scroll finish before autoplay takes over again
-    setHold(true);
-    window.clearTimeout(holdTimer.current);
-    holdTimer.current = window.setTimeout(() => setHold(false), MANUAL_HOLD_MS);
+const arrow = (
+  <svg width="9" height="9" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+    <path d="M2 10L10 2M4 2h6v6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
-    const gap = parseFloat(getComputedStyle(el).columnGap) || 0;
-    const amount = card.offsetWidth + gap;
+export default function Companies() {
+  const [filter, setFilter] = useState<SectorId | "all">("all");
+  const [expanded, setExpanded] = useState<boolean>(false);
 
-    // Going back from the very start: jump to the same spot in the second set first
-    if (direction === -1 && el.scrollLeft < amount) el.scrollLeft += loopWidth();
+  const counts = useMemo(() => {
+    const c: Record<SectorId, number> = { agri: 0, textiles: 0, automotive: 0, cosmetics: 0, stone: 0 };
+    companies.forEach((co) => co.sector && (c[co.sector] += 1));
+    return c;
+  }, []);
 
-    el.scrollBy({ left: direction * amount, behavior: "smooth" });
+  const list = filter === "all" ? companies : companies.filter((c) => c.sector === filter);
+  const shown = expanded ? list : list.slice(0, INITIAL_VISIBLE);
+
+  const choose = (f: SectorId | "all") => {
+    setFilter(f);
+    setExpanded(false);
   };
 
-  const roundBtn =
-    "flex h-12 w-12 items-center justify-center rounded-full border border-[#06294a]/15 bg-white text-[#076b3f] transition-colors hover:border-[#076b3f] hover:bg-[#f0f7f3] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0f2a5c]";
+  const pill = (active: boolean) =>
+    `flex shrink-0 items-center gap-3 rounded-full border px-4 py-2.5 text-[13px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#065f46] ${
+      active
+        ? "border-[#065f46] bg-[#065f46] text-white"
+        : "border-[#0f2a3c]/15 bg-white text-[#0f2a3c] hover:border-[#065f46]"
+    }`;
+
+  const badge = (active: boolean) =>
+    `grid h-[22px] min-w-[22px] place-items-center rounded-full border px-1 text-[10px] ${
+      active ? "border-white bg-white text-[#065f46]" : "border-[#0f2a3c]/20 text-[#0f2a3c]/70"
+    }`;
 
   return (
-    <section id="companies" style={sans} className="bg-white antialiased">
-      <div className="mx-auto max-w-[1280px] px-5 py-20 sm:px-8 lg:py-28">
+    <section id="companies" style={sans} className="bg-[#f6f3ec] antialiased">
+      <div className="px-5 py-16 sm:px-[4.6vw] lg:py-24">
         {/* Header */}
-        <div className="flex flex-wrap items-end justify-between gap-8">
+        <div className="flex flex-wrap items-end justify-between gap-x-12 gap-y-6">
           <div>
-            <p className="flex items-center gap-4 text-[13px] font-medium tracking-[0.03em] text-[#076b3f]">
-              <span className="block h-px w-10 bg-[#c1272d]" aria-hidden="true" />
-              Participating Moroccan Companies
+            <p className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#065f46]">
+              <span className="block h-px w-4 bg-[#065f46]" aria-hidden="true" />
+              Participating companies
             </p>
-            <h2
-              style={{ ...serif, fontVariationSettings: "'opsz' 144" }}
-              className="mt-5 text-[40px] font-light leading-[1.05] tracking-[-0.025em] text-[#c1272d] sm:text-[54px]"
-            >
-              Meet Moroccan Exporters
+            <h2 className="mt-5 text-[clamp(32px,3.6vw,58px)] font-medium leading-[1.08] tracking-[-0.03em] text-[#0f2a3c]">
+              Meet your next
+              <br />
+              <span className="text-[#065f46]">business partners.</span>
             </h2>
           </div>
-
-          <div className="flex gap-3">
-            <button type="button" aria-label="Previous companies" onClick={() => step(-1)} className={roundBtn}>
-              <svg width="8" height="14" viewBox="0 0 8 14" fill="none" aria-hidden="true">
-                <path d="M7 1L1 7l6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            <button type="button" aria-label="Next companies" onClick={() => step(1)} className={roundBtn}>
-              <svg width="8" height="14" viewBox="0 0 8 14" fill="none" aria-hidden="true">
-                <path d="M1 1l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              aria-label={playing ? "Pause automatic scrolling" : "Start automatic scrolling"}
-              onClick={() => setPlaying((p) => !p)}
-              className={roundBtn}
-            >
-              {playing ? (
-                <svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true">
-                  <rect x="2" y="1" width="3.5" height="12" rx="1" />
-                  <rect x="8.5" y="1" width="3.5" height="12" rx="1" />
-                </svg>
-              ) : (
-                <svg width="12" height="12" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true">
-                  <path d="M3 1.5v11a.8.8 0 0 0 1.2.7l9-5.5a.8.8 0 0 0 0-1.4l-9-5.5A.8.8 0 0 0 3 1.5Z" />
-                </svg>
-              )}
-            </button>
-          </div>
+          <p className="max-w-[340px] text-[13px] leading-[1.8] text-[#6b5b52]">
+            Browse the participating Moroccan companies by sector. Register your interest to discuss
+            potential B2B meetings with the mission team.
+          </p>
         </div>
 
-        {/* Track */}
+        {/* Sector filter */}
         <div
-          ref={trackRef}
-          role="region"
-          aria-roledescription="carousel"
-          aria-label="Participating Moroccan companies"
-          onScroll={handleScroll}
-          onMouseEnter={() => setInteracting(true)}
-          onMouseLeave={() => setInteracting(false)}
-          onFocus={() => setInteracting(true)}
-          onBlur={() => setInteracting(false)}
-          onTouchStart={() => setInteracting(true)}
-          onTouchEnd={() => setInteracting(false)}
-          className="mt-12 flex gap-6 overflow-x-auto px-1 pb-8 pt-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          role="group"
+          aria-label="Filter companies by sector"
+          className="mt-10 flex gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {items.map((c, i) => {
-            const isCopy = i >= companies.length;
+          <button type="button" aria-pressed={filter === "all"} onClick={() => choose("all")} className={pill(filter === "all")}>
+            All companies
+            <span className={badge(filter === "all")}>{pad(companies.length)}</span>
+          </button>
+          {FILTER_ORDER.map((id) => (
+            <button key={id} type="button" aria-pressed={filter === id} onClick={() => choose(id)} className={pill(filter === id)}>
+              {SECTORS[id].filter}
+              <span className={badge(filter === id)}>{pad(counts[id])}</span>
+            </button>
+          ))}
+        </div>
+
+        <p className="mt-5 text-[11px] text-[#6b5b52]">
+          {list.length} {list.length === 1 ? "company" : "companies"} · Participant list updated {UPDATED}
+        </p>
+
+        {/* Grid */}
+        <ul className="mt-5 grid list-none grid-cols-1 gap-3.5 p-0 sm:grid-cols-2 md:grid-cols-3">
+          {shown.map((c) => {
+            const sector = c.sector ? SECTORS[c.sector] : undefined;
             return (
-              <article
-                key={`${c.name}-${i}`}
-                aria-hidden={isCopy || undefined}
-                className="flex min-h-[380px] w-full shrink-0 flex-col rounded-[28px] border border-[#e5e8e6] bg-gradient-to-b from-white to-[#f7f8f7] p-3 shadow-[0_40px_80px_-55px_rgba(15,42,92,0.4)] md:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]"
-              >
-                {/* Logo box */}
-                <div className="flex h-[140px] items-center justify-center rounded-[20px] border border-[#e5e8e6] bg-white px-6">
-                  {c.logo ? (
-                    <img
-                      src={c.logo}
-                      alt={isCopy ? "" : `${c.name} logo`}
-                      loading="lazy"
-                      className="max-h-[96px] w-auto max-w-full object-contain"
-                    />
-                  ) : (
-                    <span
-                      style={serif}
-                      className="grid h-16 w-16 place-items-center rounded-full bg-[#e6f3ec] text-[24px] font-light tracking-[-0.02em] text-[#076b3f]"
-                      aria-hidden="true"
-                    >
-                      {initials(c.name)}
-                    </span>
-                  )}
-                </div>
-
-                <div className="flex flex-1 flex-col px-5 pb-5 pt-6">
-                  {c.category && (
-                    <p className="text-[13px] font-medium tracking-[0.02em] text-[#076b3f]">{c.category}</p>
-                  )}
-                  <h3
-                    style={serif}
-                    className="mt-2 text-[24px] font-normal leading-[1.15] tracking-[-0.015em] text-[#0f2a3c]"
-                  >
-                    {c.name}
-                  </h3>
-                  {c.description && (
-                    <p className="mt-3 text-[15px] leading-[1.7] text-[#4a5a6a]">{c.description}</p>
-                  )}
-
-                  {c.website && (
-                    <a
-                      href={c.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      tabIndex={isCopy ? -1 : undefined}
-                      className="group mt-auto inline-flex items-center gap-2 self-start pt-6 text-[15px] font-semibold text-[#076b3f] focus-visible:outline-none"
-                    >
-                      <span className="border-b border-[#076b3f]/30 pb-0.5 transition-colors group-hover:border-[#076b3f] group-focus-visible:border-[#076b3f]">
-                        Visit Company Website
+              <li key={c.name} className="flex">
+                <article className="flex w-full flex-col rounded-[22px] border border-[#e5e8e6] bg-white p-2.5 shadow-[0_24px_48px_-36px_rgba(15,42,60,0.4)]">
+                  {/* Photo */}
+                  <div className="relative aspect-[2/1] overflow-hidden rounded-[16px] bg-[#0a4036]">
+                    <CompanyPhoto src={photoPath(c)} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" aria-hidden="true" />
+                    {sector && (
+                      <span className="absolute bottom-5 left-3.5 text-[9px] font-semibold uppercase tracking-[0.08em] text-white">
+                        {sector.label}
                       </span>
-                      <svg
-                        width="11"
-                        height="11"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                        aria-hidden="true"
+                    )}
+                  </div>
+
+                  <div className="flex flex-1 flex-col px-3 pb-2">
+                    {/* Logo / monogram overlapping the photo edge */}
+                    <div className="relative -mt-3.5 h-10">
+                      <CompanyLogo src={logoPath(c)} name={c.name} />
+                    </div>
+
+                    {sector && (
+                      <p className="mt-3 text-[9px] font-semibold uppercase tracking-[0.08em] text-[#065f46]">
+                        {sector.label}
+                      </p>
+                    )}
+                    <h3 className="mt-2 text-[17px] font-semibold leading-[1.3] tracking-[-0.01em] text-[#0f2a3c]">
+                      {c.name}
+                    </h3>
+                    {c.description && (
+                      <p className="mt-2 text-[13.5px] leading-[1.55] text-[#5b6770]">{c.description}</p>
+                    )}
+
+                    <div className="mt-auto pt-6">
+                      <a
+                        href={c.website ?? MEET_HREF}
+                        {...(c.website ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                        className="flex items-center justify-between rounded-full bg-[#065f46] px-4 py-2.5 text-[12px] font-semibold text-white transition-colors hover:bg-[#04503b] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#065f46]"
                       >
-                        <path d="M2 10L10 2M4 2h6v6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </a>
-                  )}
-                </div>
-              </article>
+                        {c.website ? "Company website" : "Meet this company"}
+                        {arrow}
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              </li>
             );
           })}
-        </div>
+        </ul>
+
+        {/* Expand / collapse */}
+        {list.length > INITIAL_VISIBLE && (
+          <div className="mt-6 flex justify-center">
+            <button
+              type="button"
+              aria-expanded={expanded}
+              onClick={() => setExpanded((e) => !e)}
+              className="inline-flex items-center gap-2 rounded-full border border-[#0f2a3c]/20 bg-white px-6 py-2.5 text-[12px] font-medium text-[#0f2a3c] transition-colors hover:border-[#065f46] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#065f46]"
+            >
+              {expanded ? "Show fewer" : `View all ${list.length} companies`}
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 12 12"
+                fill="none"
+                className={expanded ? "rotate-180" : ""}
+                aria-hidden="true"
+              >
+                <path d="M6 2v8M2.5 6.5L6 10l3.5-3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
