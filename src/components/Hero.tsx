@@ -34,12 +34,47 @@ type CityCard = {
   id: string;
   city: string;
   date: string;
-  href: string;
+  calendarUrl: string;
+};
+
+const createGoogleCalendarUrl = (
+  city: string,
+  date: string,
+  location: string
+) => {
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: `Morocco–Germany 2026 | B2B Meetings – ${city}`,
+    dates: `${date.replace(/-/g, "")}/${date.replace(/-/g, "")}`,
+    details:
+      `Meet Moroccan exporters and explore business partnerships at the Morocco–Germany 2026 B2B meetings in ${city}. Presented by AMDIE.`,
+    location,
+  });
+
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
 };
 
 const cards: CityCard[] = [
-  { id: "01", city: "FRANKFURT", date: "23 November 2026", href: "#calendar-frankfurt" },
-  { id: "02", city: "DÜSSELDORF", date: "26 November 2026", href: "#calendar-dusseldorf" },
+  {
+    id: "01",
+    city: "FRANKFURT",
+    date: "2026-11-23",
+    calendarUrl: createGoogleCalendarUrl(
+      "Frankfurt",
+      "2026-11-23",
+      "Frankfurt, Germany"
+    ),
+  },
+  {
+    id: "02",
+    city: "DÜSSELDORF",
+    date: "2026-11-26",
+    calendarUrl: createGoogleCalendarUrl(
+      "Düsseldorf",
+      "2026-11-26",
+      "Düsseldorf, Germany"
+    ),
+  },
 ];
 
 export default function Hero() {
@@ -52,8 +87,6 @@ export default function Hero() {
           alt="Frankfurt skyline at sunset"
           className="h-full w-full object-cover object-center"
         />
-
-        {/* Full veil over the image */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#0a2540]/95 via-[#0a2540]/75 to-[#0a2540]/30" />
       </div>
 
@@ -62,7 +95,10 @@ export default function Hero() {
         <div className="max-w-[860px]">
           {/* Eyebrow */}
           <div className="flex items-center gap-[24px]">
-            <span className="h-[2px] w-[24px] shrink-0 bg-[#d9383a]" aria-hidden="true" />
+            <span
+              className="h-[2px] w-[24px] shrink-0 bg-[#d9383a]"
+              aria-hidden="true"
+            />
             <span className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-white sm:text-[12px]">
               AMDIE PRESENTS · MOROCCO–GERMANY 2026
             </span>
@@ -70,7 +106,9 @@ export default function Hero() {
 
           {/* Heading */}
           <h1 className="mt-[28px] text-[clamp(2.1rem,3.5vw,3.5rem)] font-semibold leading-[1.15] tracking-[-0.045em]">
-            <span className="block text-white">Discover Moroccan Excellence.</span>
+            <span className="block text-white">
+              Discover Moroccan Excellence.
+            </span>
             <span className="block max-w-[680px] text-[#72d7a4]">
               Build Valuable Business Partnerships.
             </span>
@@ -78,8 +116,9 @@ export default function Hero() {
 
           {/* Description */}
           <p className="mt-8 max-w-[690px] text-[15px] leading-[28px] text-white/95 lg:text-[16px]">
-            Connect with Moroccan exporters through pre-arranged B2B meetings in Frankfurt and
-            Düsseldorf. Explore five sectors and find your next sourcing partner.
+            Connect with Moroccan exporters through pre-arranged B2B meetings
+            in Frankfurt and Düsseldorf. Explore five sectors and find your
+            next sourcing partner.
           </p>
 
           {/* Event dates */}
@@ -92,11 +131,20 @@ export default function Hero() {
                 <span className="text-[10.5px] font-bold uppercase tracking-[0.2em] text-[#aab8c8]">
                   {c.id} / {c.city}
                 </span>
+
                 <span className="mt-[8px] text-[18.5px] font-semibold leading-tight text-white">
-                  {c.date}
+                  {new Date(`${c.date}T12:00:00`).toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                    timeZone: "UTC",
+                  })}
                 </span>
+
                 <a
-                  href={c.href}
+                  href={c.calendarUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-[10px] inline-flex w-fit items-center gap-1 border-b border-white/80 pb-[1px] text-[13px] font-medium text-white hover:border-white"
                 >
                   Add to Google Calendar
@@ -112,9 +160,16 @@ export default function Hero() {
               href="#registration"
               className="inline-flex h-[52px] items-stretch rounded-[3px] bg-[#118a61] text-[14.5px] font-semibold text-white transition-colors hover:bg-[#0e7552] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
-              <span className="flex items-center pl-[20px] pr-[32px]">Register your interest</span>
-              <span className="my-[13px] w-px bg-white/25" aria-hidden="true" />
-              <span className="flex items-center px-[16px] text-white"><ArrowUpRight className="h-[14px] w-[14px]" /></span>
+              <span className="flex items-center pl-[20px] pr-[32px]">
+                Register your interest
+              </span>
+              <span
+                className="my-[13px] w-px bg-white/25"
+                aria-hidden="true"
+              />
+              <span className="flex items-center px-[16px] text-white">
+                <ArrowUpRight className="h-[14px] w-[14px]" />
+              </span>
             </a>
 
             <a

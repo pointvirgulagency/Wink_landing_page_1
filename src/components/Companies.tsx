@@ -46,7 +46,7 @@ const companies: Company[] = [
     name: "CONEX SERVICE TEXTILES MAROC – QST MAROC",
     sector: "textiles",
     description: "Textile accessories for apparel.",
-    photo: "/companies/company-3.jpg",
+    photo: "/companies/strings.jpeg",
   },
   {
     name: "Coopérative féminine de distillation des plantes aromatiques",
@@ -66,7 +66,7 @@ const companies: Company[] = [
     name: "MIL'YOU PARFUM SARL",
     sector: "cosmetics",
     description: "Cosmetics and argan products.",
-    photo: "/companies/company-6.jpg",
+    photo: "/companies/perfum1.jpeg",
   },
   {
      name: "EPICES TAIBA SARL",
@@ -107,7 +107,7 @@ const companies: Company[] = [
     sector: "stone",
     description: "Marble and natural stone.",
     website: "https://www.viazastone.com/",
-    photo: "/companies/company-12.jpg",
+    photo: "/companies/marbre.jpeg",
   },
 
   {

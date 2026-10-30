@@ -17,7 +17,7 @@ const sectors: Sector[] = [
       "From Moroccan fields and waters to your supply chain. Explore food products, ingredients and seafood.",
     image: "/food.png",
     tags: ["Food products", "Seafood", "Ingredients"],
-    href: "#agri-food",
+    href: "#companies",
     span: "lg:col-span-2",
   },
   {
@@ -27,7 +27,7 @@ const sectors: Sector[] = [
       "Meet manufacturers and suppliers across garment production and textile accessories.",
     image: "/textile.png",
     tags: ["Garments", "Accessories", "Manufacturing"],
-    href: "#textiles",
+    href: "#companies",
     span: "lg:col-span-2",
   },
   {
@@ -37,7 +37,7 @@ const sectors: Sector[] = [
       "Connect with industrial expertise in automotive components and plastics manufacturing.",
     image: "/car.png",
     tags: ["Components", "Plastics", "Industry"],
-    href: "#automotive",
+    href: "#companies",
     span: "lg:col-span-2",
   },
   {
@@ -47,7 +47,7 @@ const sectors: Sector[] = [
       "Discover cosmetics, argan products and opportunities for your beauty portfolio.",
     image: "/perfum.png",
     tags: ["Argan", "Cosmetics", "Beauty"],
-    href: "#cosmetics",
+    href: "#companies",
     span: "lg:col-span-3",
   },
   {
@@ -57,7 +57,7 @@ const sectors: Sector[] = [
       "Explore Moroccan stone for architecture, construction and interior projects.",
     image: "/marble.png",
     tags: ["Marble", "Natural stone", "Materials"],
-    href: "#marble",
+    href: "#companies",
     span: "lg:col-span-3",
   },
 ];

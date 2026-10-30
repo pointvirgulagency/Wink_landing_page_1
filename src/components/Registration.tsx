@@ -53,8 +53,6 @@ const controlClass =
 
 const labelClass = "mb-2 block text-[13px] font-semibold text-[#0c241a]";
 
-/* Simple arrow drawn as SVG so it always renders as a plain line
-   (the "↗" text character shows up as a blue emoji icon on Windows). */
 function ArrowIcon({ className = "" }: { className?: string }) {
   return (
     <svg
@@ -197,14 +195,16 @@ export default function Registration() {
       id="registration"
       className="relative min-h-screen w-full overflow-hidden bg-[#063d32] font-sans antialiased text-white"
     >
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.07]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110' viewBox='0 0 110 110'%3E%3Cpath d='M55 0L110 55L55 110L0 55Z M55 14L96 55L55 96L14 55Z M0 0L110 110M110 0L0 110' fill='none' stroke='%23ffffff' stroke-width='.6'/%3E%3C/svg%3E\")",
-          backgroundSize: "110px 110px",
-        }}
-      />
+      {/* Background image and overlay */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('/form.jpeg')",
+          }}
+        />
+
+      </div>
 
       <div className="relative z-10 mx-auto grid w-full max-w-[1906px] grid-cols-1 items-start gap-12 px-6 py-16 sm:px-10 lg:grid-cols-[minmax(0,720px)_minmax(0,822px)] lg:justify-between lg:gap-16 lg:px-[7.75%] lg:py-[125px]">
         <div className="w-full max-w-[560px] pt-1 lg:sticky lg:top-16 lg:self-start">
@@ -320,93 +320,35 @@ export default function Registration() {
               </div>
 
               <Field label="First name" htmlFor="firstName" required>
-                <input
-                  id="firstName"
-                  name="firstName"
-                  type="text"
-                  required
-                  autoComplete="given-name"
-                  placeholder="First name"
-                  className={controlClass}
-                />
+                <input id="firstName" name="firstName" type="text" required autoComplete="given-name" placeholder="First name" className={controlClass} />
               </Field>
 
               <Field label="Last name" htmlFor="lastName" required>
-                <input
-                  id="lastName"
-                  name="lastName"
-                  type="text"
-                  required
-                  autoComplete="family-name"
-                  placeholder="Last name"
-                  className={controlClass}
-                />
+                <input id="lastName" name="lastName" type="text" required autoComplete="family-name" placeholder="Last name" className={controlClass} />
               </Field>
 
               <Field label="Business email" htmlFor="email" required>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  placeholder="you@company.com"
-                  className={controlClass}
-                />
+                <input id="email" name="email" type="email" required autoComplete="email" placeholder="you@company.com" className={controlClass} />
               </Field>
 
               <Field label="Company name" htmlFor="company" required>
-                <input
-                  id="company"
-                  name="company"
-                  type="text"
-                  required
-                  autoComplete="organization"
-                  placeholder="Company name"
-                  className={controlClass}
-                />
+                <input id="company" name="company" type="text" required autoComplete="organization" placeholder="Company name" className={controlClass} />
               </Field>
 
               <Field label="Country" htmlFor="country" required>
-                <input
-                  id="country"
-                  name="country"
-                  type="text"
-                  required
-                  autoComplete="country-name"
-                  placeholder="Country"
-                  className={controlClass}
-                />
+                <input id="country" name="country" type="text" required autoComplete="country-name" placeholder="Country" className={controlClass} />
               </Field>
 
               <Field label="Your position" htmlFor="position" required>
-                <Select
-                  id="position"
-                  name="position"
-                  options={POSITION_OPTIONS}
-                  placeholder="Select your position"
-                  required
-                />
+                <Select id="position" name="position" options={POSITION_OPTIONS} placeholder="Select your position" required />
               </Field>
 
               <Field label="Type of company" htmlFor="companyType" required>
-                <Select
-                  id="companyType"
-                  name="companyType"
-                  options={COMPANY_TYPE_OPTIONS}
-                  placeholder="Select company type"
-                  required
-                />
+                <Select id="companyType" name="companyType" options={COMPANY_TYPE_OPTIONS} placeholder="Select company type" required />
               </Field>
 
               <Field label="Meeting location" htmlFor="city" required>
-                <Select
-                  id="city"
-                  name="city"
-                  options={CITY_OPTIONS}
-                  placeholder="Choose your city"
-                  required
-                />
+                <Select id="city" name="city" options={CITY_OPTIONS} placeholder="Choose your city" required />
               </Field>
 
               <div className="min-w-0 sm:col-span-2">
@@ -451,26 +393,11 @@ export default function Registration() {
                 )}
               </div>
 
-              <Field
-                label="Business intention"
-                htmlFor="intentions"
-                required
-                className="sm:col-span-2"
-              >
-                <Select
-                  id="intentions"
-                  name="intentions"
-                  options={INTENTION_OPTIONS}
-                  placeholder="Select your main intention"
-                  required
-                />
+              <Field label="Business intention" htmlFor="intentions" required className="sm:col-span-2">
+                <Select id="intentions" name="intentions" options={INTENTION_OPTIONS} placeholder="Select your main intention" required />
               </Field>
 
-              <Field
-                label="Products or companies of interest"
-                htmlFor="products"
-                className="sm:col-span-2"
-              >
+              <Field label="Products or companies of interest" htmlFor="products" className="sm:col-span-2">
                 <textarea
                   id="products"
                   name="products"
