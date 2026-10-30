@@ -225,7 +225,7 @@ export default function Registration() {
                   <span className="underline underline-offset-4 decoration-white/60">
                     Add to Google Calendar
                   </span>
-                  <span aria-hidden="true">↗</span>
+                  <span aria-hidden="true" className="text-white">↗</span>
                 </a>
 
                 <p className="mt-2 text-[14px] text-[#b4cec2]">
@@ -240,7 +240,7 @@ export default function Registration() {
             className="mt-8 inline-flex items-center gap-2 text-[14px] font-medium text-white transition-colors hover:text-[#b4cec2]"
           >
             Questions? hala@wink-consulting.com
-            <span aria-hidden="true">↗</span>
+            <span aria-hidden="true" className="text-white">↗</span>
           </a>
         </div>
 
@@ -463,10 +463,7 @@ export default function Registration() {
                   className="group flex min-h-[50px] w-full items-center justify-between rounded-[2px] bg-[#00674f] px-5 py-3.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#00523e]"
                 >
                   <span>Prepare my registration email</span>
-                  <span
-                    aria-hidden="true"
-                    className="border-l border-white/40 pl-4 transition-transform group-hover:translate-x-1"
-                  >
+                  <span aria-hidden="true" className="text-white">↗</span>
                     ↗
                   </span>
                 </button>
