@@ -53,6 +53,29 @@ const controlClass =
 
 const labelClass = "mb-2 block text-[13px] font-semibold text-[#0c241a]";
 
+/* Simple arrow drawn as SVG so it always renders as a plain line
+   (the "↗" text character shows up as a blue emoji icon on Windows). */
+function ArrowIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      width="14"
+      height="14"
+      viewBox="0 0 16 16"
+      fill="none"
+      className={`shrink-0 ${className}`}
+    >
+      <path
+        d="M4 12L12 4M5 4h7v7"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 type FieldProps = {
   label: string;
   htmlFor: string;
@@ -225,7 +248,7 @@ export default function Registration() {
                   <span className="underline underline-offset-4 decoration-white/60">
                     Add to Google Calendar
                   </span>
-                  <span aria-hidden="true" className="text-white">↗</span>
+                  <ArrowIcon />
                 </a>
 
                 <p className="mt-2 text-[14px] text-[#b4cec2]">
@@ -240,7 +263,7 @@ export default function Registration() {
             className="mt-8 inline-flex items-center gap-2 text-[14px] font-medium text-white transition-colors hover:text-[#b4cec2]"
           >
             Questions? hala@wink-consulting.com
-            <span aria-hidden="true" className="text-white">↗</span>
+            <ArrowIcon />
           </a>
         </div>
 
@@ -463,9 +486,7 @@ export default function Registration() {
                   className="group flex min-h-[50px] w-full items-center justify-between rounded-[2px] bg-[#00674f] px-5 py-3.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#00523e]"
                 >
                   <span>Prepare my registration email</span>
-                  <span aria-hidden="true" className="text-white">↗</span>
-                    ↗
-                  </span>
+                  <ArrowIcon className="transition-transform group-hover:translate-x-1" />
                 </button>
 
                 <p className="mt-3 text-[11px] leading-[1.6] text-[#5b7367]">
