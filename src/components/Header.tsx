@@ -11,7 +11,7 @@ const links: NavLink[] = [
   { label: "Sectors", href: "#sectors" },
   { label: "Companies", href: "#companies" },
   { label: "Why Morocco", href: "#why-morocco" },
-  { label: "FAQs", href: "#faqs" },
+  { label: "FAQs", href: "#faq" },
 ];
 
 const ArrowUpRight = ({ className = "" }: { className?: string }) => (
