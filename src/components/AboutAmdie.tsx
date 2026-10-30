@@ -27,7 +27,7 @@ const hosts: Host[] = [
     subtitle: "Moroccan Confederation of Exporters",
     description:
       "ASMEX brings together, represents and supports Moroccan exporters. Its mission is to defend their interests, promote Moroccan exports and help businesses develop their presence in international markets.",
-    logo: "/header-logo2.png",
+    logo: "/header-logo2.jpeg",
     href: "https://www.asmex.ma",
   },
 ];

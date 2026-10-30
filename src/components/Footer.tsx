@@ -58,7 +58,7 @@ export default function Footer() {
           <div className="flex items-start gap-8 md:col-span-2 lg:col-span-1">
             <img src="/header-logo1.png" alt="AMDIE" className="block h-12 w-auto" />
             <span className="mt-1 h-12 w-px bg-[#14302a]/10" aria-hidden="true" />
-            <img src="/header-logo2.png" alt="ASMEX" className="block h-12 w-auto" />
+            <img src="/header-logo2.jpeg" alt="ASMEX" className="block h-12 w-auto" />
           </div>
 
           {organisations.map((o) => (
@@ -131,20 +131,28 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-2 border-t border-[#14302a]/10 py-6 text-[15px] text-[#55665e] sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 · Morocco–Germany B2B Business Mission</p>
-          <p>
-            Mission coordination ·{" "}
-            <a
-              href={WINK_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative inline-block font-bold tracking-[0.18em] text-[#0b6a4a] focus-visible:outline-none"
-            >
-              WINK
-              <span className={underline} aria-hidden="true" />
-            </a>
+        <div className="mt-14 flex flex-col gap-8 border-t border-[#14302a]/20 py-8 text-[#16465a] sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-[15px] sm:text-[17px]">
+            © 2026 · Morocco–Germany B2B Business Mission
           </p>
+
+          <a
+            href={WINK_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="WINK – B2B Matchmaking & Meetings Agency"
+            className="flex flex-col items-center gap-4 self-center sm:self-auto"
+          >
+            <span className="text-[15px] sm:text-[17px]">
+              Mission coordination
+            </span>
+
+            <img
+              src="/wink-logo.jpeg"
+              alt="WINK – B2B Matchmaking & Meetings Agency"
+              className="h-auto w-25 object-contain sm:w-35"
+            />
+          </a>
         </div>
       </div>
     </footer>

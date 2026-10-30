@@ -73,7 +73,7 @@ export default function Header() {
               <img src="/header-logo1.png" alt="AMDIE" className="block h-auto w-[64px] lg:w-[70px]" />
             </a>
             <span className="mx-5 h-[30px] w-px bg-[#e3e6e8] lg:ml-[40px] lg:mr-[28px]" aria-hidden="true" />
-            <img src="/header-logo2.png" alt="ASMEX" className="block h-auto w-[56px] lg:w-[72px]" />
+            <img src="/header-logo2.jpeg" alt="ASMEX" className="block h-auto w-[56px] lg:w-[72px]" />
           </div>
 
           {/* Burger (mobile/tablet) */}

@@ -63,7 +63,7 @@ export default function AboutMission() {
             </p>
 
             <a
-              href="#how-it-works"
+              href="#process"
               className="mt-[26px] inline-flex items-center gap-[18px] text-[15px] font-semibold text-[#10261f] hover:underline hover:underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0a6a4a]"
             >
               See how it works
